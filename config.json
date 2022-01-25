@@ -9,25 +9,26 @@
             "secondary-clr" : "#F2542D"
         },
         "tipography":{  
-            "fs1" : "1rem", 
-            "fs2" : "1.5rem", 
-            "fs3" : "2rem", 
-            "fs4" : "2.5rem", 
-            "fs5" : "3rem",
-            "ff" : "Dongle",
-            "fw1" : "300", 
-            "fw2" : "regular", 
-            "fw3" : "700" 
+            "fs1" : ".8rem", 
+            "fs2" : "1rem", 
+            "fs3" : "1.5rem", 
+            "fs4" : "2rem", 
+            "fs5" : "2.5rem",
+            "ff" : "Montserrat",
+            "fw1" : "100", 
+            "fw2" : "300", 
+            "fw3" : "600", 
+            "fw4" : "800" 
         },
         "box" : {
             "brd-radius" : "15px",
-            "bx-shadow" : "0px 0px 8px 2px rgba(0,0,0,0.51)"
+            "bx-shadow" : "0px 0px 9px 1px rgba(0,0,0,0.31)"
         },
         "spacing" : {
-            "spc1" : "1rem",
-            "spc2" : "1.5rem",
-            "spc3" : "2rem",
-            "spc4" : "2.5rem"
+            "spc1" : ".5rem",
+            "spc2" : "1rem",
+            "spc3" : "1.5rem",
+            "spc4" : "2rem"
         }
     },
     "stickers": [

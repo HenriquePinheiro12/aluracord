@@ -90,7 +90,7 @@ Possui documentação storybook (pesquisar)
 
 ## TODO 
 - [X] revisar código e readme até aqui
-- [] estudar o storybook da lib
+- [X] estudar o storybook da lib
 criar todos os componentes restantes
 subir no github e na vercel
 publicar no linkedin e instagram

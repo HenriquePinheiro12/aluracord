@@ -1,6 +1,6 @@
 import AppConfig from '../config.json'
 import mainBg from '../public/assets/images/main-bg.jpg'
-// let rootVariables = ``
+import {Box, Button, Text, TextField, Image} from '@skynexui/components';
 
 const getGlobalCssVariables = () => {
     const {theme} = AppConfig
@@ -12,12 +12,11 @@ const getGlobalCssVariables = () => {
     })
     return rootVariables
 }
-
 const GlobalStyle = () => {
     return (
         <>
             <style global jsx>{`
-                @import url(https://fonts.googleapis.com/css?family=Dongle:300,regular,700);
+                @import url(https://fonts.googleapis.com/css?family=Montserrat:100,200,300,regular,500,600,700,800,900,100italic,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic);
                 
                 :root{${getGlobalCssVariables()}}
 
@@ -26,7 +25,7 @@ const GlobalStyle = () => {
                     padding:0;
                     box-sizing:border-box;
                     list-style:none;
-                    font-family:var(--ff);
+                    font-family:var(--ff) ;
                 }
 
                 html, body{
@@ -35,6 +34,7 @@ const GlobalStyle = () => {
                 }
 
                 html, body, #__next{
+                    max-width:100%;
                     min-height:100vh;
                     flex:1;
                 }
@@ -47,6 +47,7 @@ const GlobalStyle = () => {
                     background-position: center;
                     display:flex;
                     align-items:center;
+                    justify-content:center
                 }
 
                 .glassmorphism{
@@ -63,46 +64,62 @@ const GlobalStyle = () => {
     )
 }
 
-const kekabCase = str => str.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
-
-const getCssVariables = (styleSheet) => {
-    //font-size: ${styleSheet['fontSize'] || '26px'}
-    let styles = ''
-    Object.keys(styleSheet).forEach(val => {
-        if(styleSheet[val].startsWith('--'))
-            styles += `${kekabCase(val)}: var(${styleSheet[val]});`
-        else
-            styles += `${kekabCase(val)}: ${styleSheet[val]};`
-    })
-    return styles
-}
-
-const Box = (obj) => {
-    const {styleSheet, classList, tag:Tag = 'h1', children} = obj
-    return (
-        <>
-            <Tag /*class={`${classList.join(' ')}`}*/>{children}</Tag>
-            <style jsx>{`
-                ${Tag}{${getCssVariables(styleSheet)}}
-            `}</style>
-        </>
-    )
-}
-
-
-export default function HomePage(){
-    return (
+export default function Home(){
+    const username = 'HenriquePinheiro12'
+    return(
         <> 
-            <main> 
-                <GlobalStyle/>
-                <Box styleSheet={{
-                    fontSize : '--fs5',
-                    width: '90%',
-                    margin: '0 auto',
-                    color: '--secondary-clr',
-                    height:'500px'
-                }} /*classList={['glassmorphism', 'test']}*/>
-                    Hello World
+            <GlobalStyle/> 
+            <main>
+                <Box className='glassmorphism' styleSheet={{
+                    display:'flex', alignItems: 'center',justifyContent: 'space-between', maxWidth: '90%', height: '350px', width: '700px', flexDirection: { xs: 'column',sm: 'row'}, borderRadius: 'var(--brd-radius)', padding: 'var(--spc2)', boxShadow:'var(--bx-shadow)'
+                }}>
+                    {/* form */}
+                    <Box as='form' styleSheet={{
+                        display: 'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', width:{xs:'100%', sm:'50%'}, textAlign:'center', marginBottom: 'var(--spc2)', margin: 'var(--spc2)'
+                    }}>
+                        <Text variant='heading3' tag='h1' styleSheet={{
+                            color: 'var(--dark)'
+                        }}>Olá, seja bem vindo!</Text>
+                        <Text tag='h2' variant='body3' styleSheet={{marginBottom: 'var(--spc3)'}}>
+                            HeavenlyCord - Mikemiers12
+                        </Text>
+                        <TextField placeholder='Usuário' variant='basicBordered' rounded='sm' fullWidth textFieldColors={{
+                            neutral:{
+                                backgroundColor:'transparent',
+                                mainColor:'var(--grey)', mainColorHighlight: 'var(--dark)',textColor: 'var(--dark)'
+                            }
+                        }} styleSheet={{marginBottom: 'var(--spc2)'}}/>
+                        <Button type='submit' label='Entrar' fullWidth buttonColors={{
+                            constrastColor: 'var(--secondary-clr)', mainColor: 'var(--dark)', mainColorLight:'var(--lihgt)', mainColorStrong: 'var(--grey)', contrastColor: '#fff'
+                        }}/>
+                    </Box>
+                    <Box 
+                        styleSheet={{
+                            display: 'flex', flexDirection: 'column', alignItems: 'center', maxWidth: '200px',
+                            padding: 'var(--spc2)', margin: 'var(--spc2)', border: '1px solid',
+                            borderColor: 'var(--grey)', borderRadius: 'var(--brd-radius)', flex: 1,
+                            minHeight: '240px',
+                        }}
+                    >
+                        <Image
+                            styleSheet={{
+                                borderRadius: '50%',
+                                marginBottom: '16px',
+                            }}
+                            src={`https://github.com/${username}.png`}
+                        />
+                        <Text
+                            variant="body4"
+                            styleSheet={{
+                                color: 'var(--dark)',
+                                // backgroundColor: appConfig.theme.colors.neutrals[900],
+                                padding: '3px 10px',
+                                borderRadius: '1000px'
+                            }}
+                            >
+                            {username}
+                        </Text>
+                    </Box>
                 </Box>
             </main>
         </>
