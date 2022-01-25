@@ -1,6 +1,7 @@
 import AppConfig from '../config.json'
 import mainBg from '../public/assets/images/main-bg.jpg'
 import {Box, Button, Text, TextField, Image} from '@skynexui/components';
+import React from 'react';
 
 const getGlobalCssVariables = () => {
     const {theme} = AppConfig
@@ -12,6 +13,7 @@ const getGlobalCssVariables = () => {
     })
     return rootVariables
 }
+
 const GlobalStyle = () => {
     return (
         <>
@@ -65,7 +67,13 @@ const GlobalStyle = () => {
 }
 
 export default function Home(){
-    const username = 'HenriquePinheiro12'
+    const [username, setUsername] = React.useState('HenriquePinheiro12')
+    // username é um dado que altera o estado do componente logo eu preciso usar useState()
+    const inputUsername = e => {
+        const value = e.target.value
+        setUsername(value)
+    }
+
     return(
         <> 
             <GlobalStyle/> 
@@ -83,7 +91,7 @@ export default function Home(){
                         <Text tag='h2' variant='body3' styleSheet={{marginBottom: 'var(--spc3)'}}>
                             HeavenlyCord - Mikemiers12
                         </Text>
-                        <TextField placeholder='Usuário' variant='basicBordered' rounded='sm' fullWidth textFieldColors={{
+                        <TextField value={username} onChange={inputUsername} placeholder='Usuário' variant='basicBordered' rounded='sm' fullWidth textFieldColors={{
                             neutral:{
                                 backgroundColor:'transparent',
                                 mainColor:'var(--grey)', mainColorHighlight: 'var(--dark)',textColor: 'var(--dark)'

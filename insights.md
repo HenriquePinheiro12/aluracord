@@ -87,17 +87,18 @@ O arquivo divide o tema em cores primarias e neutras (ambas com suas respectivas
 biblioteca de componentes
 Possui documentação storybook (pesquisar)
 
+## Estado (coração do react)
+Cada alteração em um componente é um novo estado (ex: value de um input pode mudar -> muda estado)
+No react eu preciso definir se um componente é alterável para que cada alteração nele seja monitorada
 
-## TODO 
-- [X] revisar código e readme até aqui
-- [X] estudar o storybook da lib
-criar todos os componentes restantes
-subir no github e na vercel
-publicar no linkedin e instagram
+Devo vincular o componente a uma variável
 
+No caso do input, o value é uma propriedade que pode mudar, logo eu devo setar uma variável como padrão e um onChange handler
+ 
+/////////
+Rocketseat
 
-## ideas
-- [X] criar propriedades no config.json para tamanhos, paddings, border-radius, além das cores e inserí-las com vars no :root. Função que cria tudo automaticamente
+useState() cira uma variável dentro do escopo do meu componente. O valor passado como argumento é o valor inicial.
+A função retorna um array com: a variável em si atualizada e uma função para alterar essa variável. Alterando essa variável, todos os lugares do componente que a possuem serão rerenderizados
 
-- [X] testar a passagem de estilos atravéz de um objeto
-- [] como adcionar classes sem perder a classe principal
+Portanto eu não preciso rerenderizar manualmente todos os componentes que utilizam esses dados, ou mesmo rerenderizar a página. O react faz isso por mim
