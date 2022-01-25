@@ -94,7 +94,7 @@ No react eu preciso definir se um componente é alterável para que cada altera�
 Devo vincular o componente a uma variável
 
 No caso do input, o value é uma propriedade que pode mudar, logo eu devo setar uma variável como padrão e um onChange handler
- 
+
 /////////
 Rocketseat
 
@@ -102,3 +102,16 @@ useState() cira uma variável dentro do escopo do meu componente. O valor passad
 A função retorna um array com: a variável em si atualizada e uma função para alterar essa variável. Alterando essa variável, todos os lugares do componente que a possuem serão rerenderizados
 
 Portanto eu não preciso rerenderizar manualmente todos os componentes que utilizam esses dados, ou mesmo rerenderizar a página. O react faz isso por mim
+
+## Roteamento
+obs: um input[submit] dá refresh na página. Para isso, use e.preventDefault()
+
+o next faz o roteamento automaticamente, quando coloco os caminhos na pasta pages
+
+importo função useRouter() do módulo next/router. Essa função retorna um objeto
+
+A navegação de páginas do navegador funciona como um array de urls. Portanto eu posso usar a função push do objeto retornado para adcionar uma nova url e ir para ela
+
+## Colocar estilos globais para todos as páginas
+
+next encapsula todas as pages em um arquivo _app.js. Tudo oq eu colocar nessa página será exportado para todas as páginas
