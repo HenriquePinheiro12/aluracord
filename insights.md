@@ -103,6 +103,8 @@ A função retorna um array com: a variável em si atualizada e uma função par
 
 Portanto eu não preciso rerenderizar manualmente todos os componentes que utilizam esses dados, ou mesmo rerenderizar a página. O react faz isso por mim
 
+A função do useState é um hook. Você muda a variável por ela e o react faz todo o trabalho na renderização 
+
 ## Roteamento
 obs: um input[submit] dá refresh na página. Para isso, use e.preventDefault()
 
@@ -115,3 +117,28 @@ A navegação de páginas do navegador funciona como um array de urls. Portanto 
 ## Colocar estilos globais para todos as páginas
 
 next encapsula todas as pages em um arquivo _app.js. Tudo oq eu colocar nessa página será exportado para todas as páginas
+
+## Modelagem de uma aplicação
+
+1º Imaginar as ações do usuário na aplicação
+2º Pensar nas soluções como dev
+
+## Lógica do chat
+
+TextField com onChange usando useState para monitorar o input
+ChatList com useState para monitorar a lista de mensagens
+
+obs: usar onKeyPressed para criar atalhos
+
+OBSSSSSSSSSSS: o react converte tudo para string no JSX; logo, um array de componentes retornado pelo map será cuspido na tela
+
+Posso jogar um array de componentes no return
+
+## Array de componentes precisa de key
+
+Cada elemento deve ter uma key única
+
+## Desafio
+
+botão de submit da mensagem
+botão de excluir mensagem
