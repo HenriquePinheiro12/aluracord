@@ -1,15 +1,44 @@
-import { Box, TextField, Button } from "@skynexui/components"
+import { Box, TextField, Button, Text, Image } from "@skynexui/components"
+import React from "react"
 
 
 const Chat = (props) => {
+    const username = 'HenriquePinheiro12'
+    const [messageInput, setMessageInput] = React.useState('')
+    const [messages, setMessage] = React.useState([{
+        id: 0,
+        from: username,
+        content: messageInput || 'Testing. Lorem Ipsum, bla, bla bla',
+        date: new Date().toLocaleDateString('pt-BR')
+    }])
+
+
+    const handleInput = e => {
+        setMessageInput(e.target.value)
+    }
+    const handleSubmit = e => {
+        if (e.key === 'Enter'){
+            if (!e.shiftKey){
+                e.preventDefault()
+                setMessageInput('')
+            } else{return}
+        }
+    }
+
     return(
         <>
             <main>
                 <Box styleSheet={{padding: 'var(--spc3)', width:'90%'}} className="glassmorphism" > {/*Main section*/}
                     <Header/>
-                    <ChatBox/>
+                    <ChatBox>
+                        {
+                            messages.map(val => {
+                                return <Message message={val} username={username} /> 
+                            })
+                        }
+                    </ChatBox>
                     <Box styleSheet={{marginTop:'var(--spc2)', display:'flex', alignItems:'center', justifyContent: 'space-between'}}>
-                        <TextField type="textarea" variant="basicBordered" textFieldColors={{
+                        <TextField value={messageInput} onKeyPress={handleSubmit} onChange={handleInput} type="textarea" variant="basicBordered" textFieldColors={{
                             neutral: {
                                 backgroundColor: 'var(--light)',
                                 textColor:'var(--dark)',
@@ -55,6 +84,20 @@ function ChatBox(props){ //destructure it if necessary
     )
 }
 
-
+function Message({message, username}){
+    return(
+        <>
+            <Box key={message.id}>
+                <Box styleSheet={{display: 'flex', alignItems:'center'}}>
+                    <Image src={`https://github.com/${username}.png`} styleSheet={{width:'25px', borderRadius:'50%'}}/>
+                    <Text children={message.from} styleSheet={{margin: '0 var(--spc1)', fontWeight: 'var(--fw3)'}} variant="body3"/>
+                    <Text children={message.date} variant="body4"/>  
+                </Box>
+                <Text children={message.content} tag="p" styleSheet={{margin: 'var(--spc1)'}}>
+                </Text>
+            </Box>
+        </>
+    )
+}
 
 export default Chat
