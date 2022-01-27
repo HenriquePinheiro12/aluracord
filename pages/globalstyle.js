@@ -1,6 +1,5 @@
 import AppConfig from '../config.json'
 import mainBg from '../public/assets/images/main-bg.jpg'
-
 const getGlobalCssVariables = () => {
     const {theme} = AppConfig
     let rootVariables = ``;
