@@ -5,24 +5,29 @@ import React from "react"
 const Chat = (props) => {
     const username = 'HenriquePinheiro12'
     const [messageInput, setMessageInput] = React.useState('')
-    const [messages, setMessage] = React.useState([{
-        id: 0,
-        from: username,
-        content: messageInput || 'Testing. Lorem Ipsum, bla, bla bla',
-        date: new Date().toLocaleDateString('pt-BR')
-    }])
+    const [messages, setMessage] = React.useState([])
 
 
-    const handleInput = e => {
-        setMessageInput(e.target.value)
-    }
+    const handleInput = ({target: {value}}) => setMessageInput(value)
+
     const handleSubmit = e => {
         if (e.key === 'Enter'){
             if (!e.shiftKey){
                 e.preventDefault()
-                setMessageInput('')
-            } else{return}
+                addMessage(messages)
+            }
         }
+    }
+
+    const addMessage = (messages) => {
+        const newMessage = {
+            id: messages.length,
+            from: username,
+            content: messageInput,
+            date: new Date().toLocaleDateString('pt-BR')
+        }
+        setMessage([...messages, newMessage])
+        setMessageInput('')
     }
 
     return(
@@ -38,7 +43,7 @@ const Chat = (props) => {
                         }
                     </ChatBox>
                     <Box styleSheet={{marginTop:'var(--spc2)', display:'flex', alignItems:'center', justifyContent: 'space-between'}}>
-                        <TextField value={messageInput} onKeyPress={handleSubmit} onChange={handleInput} type="textarea" variant="basicBordered" textFieldColors={{
+                        <TextField value={messageInput} onKeyPress={handleSubmit} onChange={handleInput} type="textarea" variant="basicBordered" styleSheet={{resize:'none'}} textFieldColors={{
                             neutral: {
                                 backgroundColor: 'var(--light)',
                                 textColor:'var(--dark)',
@@ -68,6 +73,7 @@ const Header = () => {
                 colorVariant="dark"
                 label="Logout"
                 variant="tertiary"
+                href="/"
             />
         </Box>
         </>
@@ -77,7 +83,7 @@ const Header = () => {
 function ChatBox(props){ //destructure it if necessary
     return (
         <>
-            <Box className="glassmorphism" styleSheet={{margin: 'var(--spc1) auto', height:'350px', border: 'solid 1px var(--dark)', borderRadius:'var(--brd-radius)', padding:'var(--spc2)', display: 'flex', flexDirection:'column', justifyContent:'flex-end', borderColor: 'transparent'}}>
+            <Box className="glassmorphism" styleSheet={{margin: 'var(--spc1) auto', height:'350px', border: 'solid 1px var(--dark)', borderRadius:'var(--brd-radius)', padding:'var(--spc2)', display: 'flex', flexDirection:'column', justifyContent:'flex-end', borderColor: 'transparent' , overflow:'auto'}}>
                 {props.children}
             </Box>
         </>
@@ -87,7 +93,7 @@ function ChatBox(props){ //destructure it if necessary
 function Message({message, username}){
     return(
         <>
-            <Box key={message.id}>
+            <Box tag="li" key={message.id}>
                 <Box styleSheet={{display: 'flex', alignItems:'center'}}>
                     <Image src={`https://github.com/${username}.png`} styleSheet={{width:'25px', borderRadius:'50%'}}/>
                     <Text children={message.from} styleSheet={{margin: '0 var(--spc1)', fontWeight: 'var(--fw3)'}} variant="body3"/>
