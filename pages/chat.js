@@ -64,10 +64,11 @@ const Header = () => {
     return (
         <>
         <Box styleSheet={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
-            <Button
+            <Text
                 colorVariant="dark"
-                label="Chat"
-                variant="tertiary"
+                children="Chat"
+                variant="body1"
+                styleSheet={{padding: '0 var(--spc1)'}}
             />
             <Button
                 colorVariant="dark"
