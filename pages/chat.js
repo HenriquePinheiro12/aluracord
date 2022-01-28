@@ -1,9 +1,10 @@
 import { Box, TextField, Button, Text, Image } from "@skynexui/components"
 import React from "react"
 import { createClient } from "@supabase/supabase-js"
+import { useRouter } from "next/router" //default exports doesn´t need destructuring
+import { StickersBtn } from '../src/components/StickersBtn'
 
 const Chat = (props) => {
-    const username = 'HenriquePinheiro12'
     const [messageInput, setMessageInput] = React.useState('')
     const [messages, setMessage] = React.useState([])
     
@@ -26,7 +27,8 @@ const Chat = (props) => {
     }
     React.useEffect(getMessagesFromDataBase, [])
     
-    
+    const router = useRouter()
+    const username = router.query.username //gets the query from the url
     const handleInput = ({target: {value}}) => setMessageInput(value)
     const handleSubmit = e => {
         if(e.key !== 'Enter') return
@@ -80,7 +82,7 @@ const Chat = (props) => {
                                 mainColorHighlight: 'var(--dark)'
                             },
                         }} fullWidth placeholder="Mensagem" rounded="sm"/>
-                        <Button size="xs" variant="tertiary" iconName="FaRegStar" styleSheet={{margin: '0 var(--spc1)'}}/>
+                        <StickersBtn/>
                     </Box>
                 </Box>
             </main>

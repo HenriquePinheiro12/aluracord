@@ -22,8 +22,8 @@ export default function Home(){
                     {/* form */}
                     <Box as='form' onSubmit={function(e){
                         e.preventDefault()
-                        router.push('./chat')
-                        // adciona nova url ao topo da lista de urls
+                        router.push(`./chat?username=${username}`)
+                        // adciona nova url ao topo da lista de urls, passando um query no path
                     }} styleSheet={{
                         display: 'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', width:{xs:'100%', sm:'50%'}, textAlign:'center', marginBottom: 'var(--spc2)', margin: 'var(--spc2)'
                     }}>
