@@ -1,34 +1,61 @@
 import { Box, TextField, Button, Text, Image } from "@skynexui/components"
 import React from "react"
-
+import { createClient } from "@supabase/supabase-js"
 
 const Chat = (props) => {
     const username = 'HenriquePinheiro12'
     const [messageInput, setMessageInput] = React.useState('')
     const [messages, setMessage] = React.useState([])
-
-
+    
+    // ##### Supabase settings #####
+    const SUPABASE_URL = `https://cegqjomulrivfprmjhzu.supabase.co`
+    const SUPABASE_ANON_KEY = 
+    `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzM4NzIxNywiZXhwIjoxOTU4OTYzMjE3fQ.wFXKsLIIDQpozaK1TTS-umMzDdEgY4X0eea8NfYzkvE`
+    const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+    // sets the server we´ll want to fetch soon (requires the url and the access key (credentials))
+    // and creates a client-side that makes fetches to the supabase server and returns the object from the json
+    
+    const getMessagesFromDataBase = () => {
+        supabaseClient
+        .from('mensagens') // searches in a table in my server
+        .select('*') // selects all the rows (returns promisse)
+        .order('id', {ascending:false}) //brings the array from the bottom
+        .then(resp => { // executes a callback to the resolution of an promisse
+            setMessage(resp.data) //gets all the msgs from the database
+        })
+    }
+    React.useEffect(getMessagesFromDataBase, [])
+    
+    
     const handleInput = ({target: {value}}) => setMessageInput(value)
-
     const handleSubmit = e => {
-        if (e.key === 'Enter'){
+        if(e.key !== 'Enter') return
+        else{
             if (!e.shiftKey){
                 e.preventDefault()
                 addMessage(messages)
             }
         }
     }
-
     const addMessage = (messages) => {
         const newMessage = {
-            id: messages.length,
+            // id: messages.length++,
             from: username,
             content: messageInput,
-            date: new Date().toLocaleDateString('pt-BR')
+            // don´t need to set date and id
+            // date´s and id´s fields at database auto generate when I insert a row
         }
+        sendMessagesToDataBase(newMessage)
+        // 
+        // // Each new message unshifts the array
+        // // Aproached this way for problems with flex-box´s flex-direction and overflow
+    }
+    const sendMessagesToDataBase = (newMessage) => {
+        supabaseClient.from('mensagens').insert([newMessage]) // the body must be always an array (even in singled length) that´ll be concatenated in my db
+        .then(({ data }) => updateMessages(data[0]))
+    }
+    const updateMessages = (newMessage) => {
         setMessage([newMessage, ...messages])
-        // Each new message unshifts the array
-        // Aproached this way for problems with flex-box´s flex-direction and overflow
         setMessageInput('')
     }
 
@@ -67,7 +94,6 @@ const Header = () => {
         <>
         <Box styleSheet={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
             <Text
-                colorVariant="dark"
                 children="Chat"
                 variant="body1"
                 styleSheet={{padding: '0 var(--spc1)'}}
@@ -103,12 +129,13 @@ function ChatBox({children}){ //destructure it if necessary
     )
 }
 
+
 function Message({message, username}){
     return(
         <>
             <Box tag="li" key={message.id}>
                 <Box styleSheet={{display: 'flex', alignItems:'center'}}>
-                    <Image src={`https://github.com/${username}.png`} styleSheet={{width:'25px', borderRadius:'50%'}}/>
+                    <Image src={`https://github.com/${message.from}.png`} styleSheet={{width:'25px', borderRadius:'50%'}}/>
                     <Text children={message.from} styleSheet={{margin: '0 var(--spc1)', fontWeight: 'var(--fw3)'}} variant="body3"/>
                     <Text children={message.date} variant="body4"/>  
                 </Box>

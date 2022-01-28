@@ -142,3 +142,51 @@ Cada elemento deve ter uma key única
 
 botão de submit da mensagem
 botão de excluir mensagem
+
+## Integração do supabase.io
+
+- Back-end as a Service
+- Banco Postgree
+
+Intenção do BD: guardar em um servidor nosso arrays de mensagens
+
+### Requisições na web
+Usuário/client-side/javascirpt acessa url, faz requisição ao server. Server busca dados no banco e cospe no client-side os dados em um json
+
+- Status code
+200: ok
+404: not-found
+
+### Requisição de dados no front
+
+fetch(url) função do navegador (GET request = buscar dados) acessa a url via js, 
+retorna uma promisse (algo que vai acontecer)
+
+.then(async (reponse) =>{
+    const resp = await response.json()
+}) 
+
+executado quando a promisse acontecer (resposta chegar) o servidor retorna um json (response). A função passa esse objeto para o callback e ele transforma ela num objeto (essa conversão também é uma promisse )
+
+## COnfigurando o supabase
+
+Setar a key (Geralmente, se usa uma KEY para conectar com backend)
+Setar a url (endpoint do servidor do supa)
+supabase possui lib de javascript com utilitários para usar no front
+lib faz fatches no servidor do supabase
+
+func createClient() cria um client-side com funções para queries no BD
+
+
+## Efeitos colaterais do JavaScript
+O react chama as funções do component (inclusive fetches)sempre que acontece uma alteração no state do componente (cada letra digitada)?
+
+Coisas que acontecem independentemente do fluxo de estados do elemento são efeitos colaterais (Dado que busco de uma API, Função que realizo apenas uma vez...)
+
+Uso hook React.useEffect(callback, [stateTarget])
+sempre que um estado passado como argumento muda, realiza o callback
+
+
+## TODO
+tela de loading enquanto a API
+criar componentes com as informações do github
