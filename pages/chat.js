@@ -26,7 +26,9 @@ const Chat = (props) => {
             content: messageInput,
             date: new Date().toLocaleDateString('pt-BR')
         }
-        setMessage([...messages, newMessage])
+        setMessage([newMessage, ...messages])
+        // Each new message unshifts the array
+        // Aproached this way for problems with flex-box´s flex-direction and overflow
         setMessageInput('')
     }
 
@@ -81,11 +83,21 @@ const Header = () => {
     )
 }
 
-function ChatBox(props){ //destructure it if necessary
+function ChatBox({children}){ //destructure it if necessary
     return (
         <>
-            <Box className="glassmorphism" styleSheet={{margin: 'var(--spc1) auto', height:'350px', border: 'solid 1px var(--dark)', borderRadius:'var(--brd-radius)', padding:'var(--spc2)', display: 'flex', flexDirection:'column', justifyContent:'flex-end', borderColor: 'transparent' , overflow:'auto'}}>
-                {props.children}
+            <Box className="glassmorphism" styleSheet={{
+                margin: 'var(--spc1) auto', height:'350px', border: 'solid 1px var(--dark)', borderRadius:'var(--brd-radius)', padding:'var(--spc2)', display: 'flex', borderColor: 'transparent', 
+                // pattern to the scroll
+                flexDirection:'column-reverse', 
+                overflow:'auto'
+                // Try to find a way to put new messages on the end of the array and work with 
+                /*
+                    flexDirection: 'column',
+                    justifyContent: 'flex-end'
+                */
+            }}>
+                {children}
             </Box>
         </>
     )
@@ -100,7 +112,7 @@ function Message({message, username}){
                     <Text children={message.from} styleSheet={{margin: '0 var(--spc1)', fontWeight: 'var(--fw3)'}} variant="body3"/>
                     <Text children={message.date} variant="body4"/>  
                 </Box>
-                <Text children={message.content} tag="p" styleSheet={{margin: 'var(--spc1)'}}>
+                <Text children={message.content} tag="p" styleSheet={{margin: 'var(--spc1)', wordWrap: 'break-word'}}>
                 </Text>
             </Box>
         </>
