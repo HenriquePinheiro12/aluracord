@@ -1,5 +1,6 @@
 import AppConfig from '../config.json'
 import mainBg from '../public/assets/images/main-bg.jpg'
+
 const getGlobalCssVariables = () => {
     const {theme} = AppConfig
     let rootVariables = ``;
@@ -37,6 +38,19 @@ const GlobalStyle = () => {
                     min-height:100vh;
                     flex:1;
                 }
+                
+                ::-webkit-scrollbar{
+                    width: 5px
+                }
+
+                ::-webkit-scrollbar-track{
+                    background: transparent
+                }
+
+                ::-webkit-scrollbar-thumb{
+                    background: var(--grey);
+                    border-radius: 2px;
+                }
 
                 main{
                     min-height:100vh;
@@ -57,6 +71,7 @@ const GlobalStyle = () => {
                     border-radius: 10px;
                     border: 1px solid rgba( 255, 255, 255, 0.18 );
                 }
+                
             `}
             </style>
         </>

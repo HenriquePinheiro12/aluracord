@@ -65,7 +65,7 @@ export default function Home(){
                                 padding: '3px 10px',
                                 borderRadius: '1000px'
                             }}
-                            >
+                        >
                             {username}
                         </Text>
                     </Box>
