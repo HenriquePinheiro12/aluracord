@@ -186,7 +186,13 @@ Coisas que acontecem independentemente do fluxo de estados do elemento são efei
 Uso hook React.useEffect(callback, [stateTarget])
 sempre que um estado passado como argumento muda, realiza o callback
 
+## Componentes com pop-ups
+Criar state isOpen. Dentro do return, fazer um short-circuit para, se isOpen, retornar componente
+(23:00)
+
 
 ## TODO
+checar se o input está vazio antes de fazer o submit
 tela de loading enquanto a API
 criar componentes com as informações do github
+criar apenas um header para mensagens consecutivas! (obs: short-circuit)
