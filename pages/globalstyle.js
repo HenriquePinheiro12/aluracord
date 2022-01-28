@@ -44,7 +44,8 @@ const GlobalStyle = () => {
                 }
 
                 ::-webkit-scrollbar-track{
-                    background: transparent
+                    background: transparent;
+                    padding: 2px 0;
                 }
 
                 ::-webkit-scrollbar-thumb{
