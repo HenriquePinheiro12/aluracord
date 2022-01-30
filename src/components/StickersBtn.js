@@ -2,9 +2,10 @@ import React from 'react';
 import { Box, Button, Text, Image } from '@skynexui/components';
 import appConfig from '../../config.json';
 
+
 export function StickersBtn(props) {
   const [isOpen, setOpenState] = React.useState('');
-
+  
   return (
     <Box
       styleSheet={{
@@ -75,12 +76,10 @@ export function StickersBtn(props) {
             }}
           >
             {appConfig.stickers.map((sticker) => (
+              // returns an component to each url
               <Text
                 onClick={() => {
-                  // console.log('[DENTRO DO COMPONENTE] Clicou no sticker:', sticker);
-                  if (Boolean(props.onStickerClick)) {
-                    props.onStickerClick(sticker);
-                  }
+                  props.stickerClick(sticker)
                 }}
                 tag="li" key={sticker}
                 styleSheet={{

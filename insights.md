@@ -188,11 +188,29 @@ sempre que um estado passado como argumento muda, realiza o callback
 
 ## Componentes com pop-ups
 Criar state isOpen. Dentro do return, fazer um short-circuit para, se isOpen, retornar componente
-(23:00)
+ 
+## Retornos deiferentes nos componentes
+Usar curto circuito ou ternário no return
 
+## Interceptação 
+O usuário do componente pode passar eventos personalizados como propriedades
+
+## Chat em real-time
+O próprio supabase possui uma função para escutar mudanças no db
+
+Obs: Lógica até aqui:
+Sempre que digito nova msg, atualizo a lista, além de mandar pro db
+
+Nova lógica:
+Adicionar listener para mudanças no data-base. Somente mandar para o server a msgm adcionada
+
+
+- Obs: meu listenner está sendo setado justamente no carregar da página (com o useEffect) - antes de tudo. Logo, o estado inicial das minhas mensagens é vazio, e, como ele não acompanha os estados da página, ele não recebe esses novos estados. Portanto, devo passar pra ele um callback que irá receber  atual versão dos estados para que ele possa atualizar.
+
+Essa função deve estar no useEffect, pois foge do flow da página
 
 ## TODO
-checar se o input está vazio antes de fazer o submit
+- [X] checar se o input está vazio antes de fazer o submit
 tela de loading enquanto a API
 criar componentes com as informações do github
-criar apenas um header para mensagens consecutivas! (obs: short-circuit)
+- [X] criar apenas um header para mensagens consecutivas! (obs: short-circuit)

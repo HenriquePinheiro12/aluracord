@@ -1,14 +1,22 @@
 import { Box, TextField, Button, Text, Image } from "@skynexui/components"
-import React from "react"
+import React from "react" // I can use any name to default export
 import { createClient } from "@supabase/supabase-js"
-import { useRouter } from "next/router" //default exports doesn´t need destructuring
+import { useRouter } from "next/router" //non-default exports need curly braces
 import { StickersBtn } from '../src/components/StickersBtn'
+import Header from '../src/components/header'
+import ChatBox from "../src/components/chatbox"
+import Message from '../src/components/message'
 
-const Chat = (props) => {
-    const [messageInput, setMessageInput] = React.useState('')
-    const [messages, setMessage] = React.useState([])
+export default function Chat (props){
+    /* Routering */
+    const router = useRouter()
+    const username = router.query.username //gets the query from the url
     
-    // ##### Supabase settings #####
+    /* States */
+    const [messageInput, setMessageInput] = React.useState('')
+    const [messages, setMessages] = React.useState([])
+    
+    /* Supabase settings */
     const SUPABASE_URL = `https://cegqjomulrivfprmjhzu.supabase.co`
     const SUPABASE_ANON_KEY = 
     `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzM4NzIxNywiZXhwIjoxOTU4OTYzMjE3fQ.wFXKsLIIDQpozaK1TTS-umMzDdEgY4X0eea8NfYzkvE`
@@ -16,48 +24,64 @@ const Chat = (props) => {
     // sets the server we´ll want to fetch soon (requires the url and the access key (credentials))
     // and creates a client-side that makes fetches to the supabase server and returns the object from the json
     
-    const getMessagesFromDataBase = () => {
+    /* Effects */
+    const getAllMessagesFromDataBase = () => {
         supabaseClient
         .from('mensagens') // searches in a table in my server
         .select('*') // selects all the rows (returns promisse)
         .order('id', {ascending:false}) //brings the array from the bottom
         .then(resp => { // executes a callback to the resolution of an promisse
-            setMessage(resp.data) //gets all the msgs from the database
+            setMessages(resp.data) //gets all the msgs from the database
         })
     }
-    React.useEffect(getMessagesFromDataBase, [])
+    const setRealTimeListener = (callback) => {
+        return supabaseClient.from('mensagens').on('INSERT', ({new : newMsg}) => { 
+            callback(newMsg)
+        }).subscribe() // creates a listener to any insert at the data-base, passing the response to the callback with the new items
+    }
+    React.useEffect(() => { // happens only when page is loaded
+        getAllMessagesFromDataBase()
+        setRealTimeListener((newMessage) => {
+            setMessages((currentMessages) => { // useEffect sets the listener when the page loads. So it´s initial stat value is empty. I can have the actual one with a callback
+                console.log('received from db')
+                return [
+                    newMessage,
+                    ...currentMessages 
+                ]
+            })
+        }) //anables the listenner
+    }, [])
     
-    const router = useRouter()
-    const username = router.query.username //gets the query from the url
+    /* From-CLient messages */
     const handleInput = ({target: {value}}) => setMessageInput(value)
+
+    const handleStickerClick = (sticker) => {
+        const content = `:sticker: ${sticker}`
+        createMessage(content)
+    }
     const handleSubmit = e => {
         if(e.key !== 'Enter') return
         else{
             if (!e.shiftKey){
                 e.preventDefault()
-                addMessage(messages)
+                createMessage(messageInput)
             }
         }
     }
-    const addMessage = (messages) => {
+    const createMessage = (content) => { // messages coming from the client side
         const newMessage = {
             // id: messages.length++,
             from: username,
-            content: messageInput,
+            content: content,
             // don´t need to set date and id
             // date´s and id´s fields at database auto generate when I insert a row
         }
         sendMessagesToDataBase(newMessage)
-        // 
-        // // Each new message unshifts the array
-        // // Aproached this way for problems with flex-box´s flex-direction and overflow
     }
     const sendMessagesToDataBase = (newMessage) => {
-        supabaseClient.from('mensagens').insert([newMessage]) // the body must be always an array (even in singled length) that´ll be concatenated in my db
-        .then(({ data }) => updateMessages(data[0]))
-    }
-    const updateMessages = (newMessage) => {
-        setMessage([newMessage, ...messages])
+        supabaseClient.from('mensagens').insert([newMessage]).then(() => {
+            console.log('sent to server')
+        }) // the body of the response must be always an array (even in singled length) that´ll be concatenated in my db
         setMessageInput('')
     }
 
@@ -68,8 +92,9 @@ const Chat = (props) => {
                     <Header/>
                     <ChatBox>
                         {
-                            messages.map(val => {
-                                return <Message message={val} username={username} /> 
+                            messages.map((val, i) => {
+                                return <Message message={val} 
+                                consecutive={Boolean(i < messages.length -1 && messages[i + 1].from === val.from)} /> 
                             })
                         }
                     </ChatBox>
@@ -82,7 +107,7 @@ const Chat = (props) => {
                                 mainColorHighlight: 'var(--dark)'
                             },
                         }} fullWidth placeholder="Mensagem" rounded="sm"/>
-                        <StickersBtn/>
+                        <StickersBtn stickerClick={handleStickerClick}/>
                     </Box>
                 </Box>
             </main>
@@ -91,61 +116,10 @@ const Chat = (props) => {
 
 }
 
-const Header = () => {
-    return (
-        <>
-        <Box styleSheet={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
-            <Text
-                children="Chat"
-                variant="body1"
-                styleSheet={{padding: '0 var(--spc1)'}}
-            />
-            <Button
-                colorVariant="dark"
-                label="Logout"
-                variant="tertiary"
-                href="/"
-            />
-        </Box>
-        </>
-    )
-}
-
-function ChatBox({children}){ //destructure it if necessary
-    return (
-        <>
-            <Box className="glassmorphism" styleSheet={{
-                margin: 'var(--spc1) auto', height:'350px', border: 'solid 1px var(--dark)', borderRadius:'var(--brd-radius)', padding:'var(--spc2)', display: 'flex', borderColor: 'transparent', 
-                // pattern to the scroll
-                flexDirection:'column-reverse', 
-                overflow:'auto'
-                // Try to find a way to put new messages on the end of the array and work with 
-                /*
-                    flexDirection: 'column',
-                    justifyContent: 'flex-end'
-                */
-            }}>
-                {children}
-            </Box>
-        </>
-    )
-}
 
 
-function Message({message, username}){
-    return(
-        <>
-            <Box tag="li" key={message.id}>
-                <Box styleSheet={{display: 'flex', alignItems:'center'}}>
-                    <Image src={`https://github.com/${message.from}.png`} styleSheet={{width:'25px', borderRadius:'50%'}}/>
-                    <Text children={message.from} styleSheet={{margin: '0 var(--spc1)', fontWeight: 'var(--fw3)'}} variant="body3"/>
-                    <Text children={message.date} variant="body4"/>  
-                </Box>
-                <Text children={message.content} tag="p" styleSheet={{margin: 'var(--spc1)', wordWrap: 'break-word'}}>
-                </Text>
-            </Box>
-        </>
-    )
-}
 
-export default Chat
+
+
+
+
