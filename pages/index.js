@@ -3,7 +3,7 @@ import React from 'react';
 import { useRouter } from 'next/router';
 
 export default function Home(){
-    const [username, setUsername] = React.useState('HenriquePinheiro12')
+    const [username, setUsername] = React.useState('')
     // username é um dado que altera o estado do componente logo eu preciso usar useState()
     const inputUsername = e => { // text input handler
         const value = e.target.value
@@ -11,7 +11,7 @@ export default function Home(){
     }
     const router = useRouter() // retorna objeto
     const getImageUrl = username => 
-        username.length > 2 ? `http://github.com/${username}.png` : ''
+        username.length > 2 ? `http://github.com/${username}.png` : `http://github.com/github.png`
 
     return(
         <>              

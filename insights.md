@@ -188,7 +188,12 @@ sempre que um estado passado como argumento muda, realiza o callback
 
 ## Componentes com pop-ups
 Criar state isOpen. Dentro do return, fazer um short-circuit para, se isOpen, retornar componente
-(23:00)
+ 
+## Retornos deiferentes nos componentes
+Usar curto circuito ou ternário no return
+
+## Interceptação 
+O usuário do componente pode passar eventos personalizados como propriedades
 
 
 ## TODO

@@ -35,15 +35,15 @@ const Chat = (props) => {
         else{
             if (!e.shiftKey){
                 e.preventDefault()
-                addMessage(messages)
+                addMessage(messageInput)
             }
         }
     }
-    const addMessage = (messages) => {
+    const addMessage = (content) => {
         const newMessage = {
             // id: messages.length++,
             from: username,
-            content: messageInput,
+            content: content,
             // don´t need to set date and id
             // date´s and id´s fields at database auto generate when I insert a row
         }
@@ -59,6 +59,10 @@ const Chat = (props) => {
     const updateMessages = (newMessage) => {
         setMessage([newMessage, ...messages])
         setMessageInput('')
+    }
+    const handleStickerClick = (sticker) => {
+        const content = `:sticker: ${sticker}`
+        addMessage(content)
     }
 
     return(
@@ -82,7 +86,7 @@ const Chat = (props) => {
                                 mainColorHighlight: 'var(--dark)'
                             },
                         }} fullWidth placeholder="Mensagem" rounded="sm"/>
-                        <StickersBtn/>
+                        <StickersBtn stickerClick={handleStickerClick}/>
                     </Box>
                 </Box>
             </main>
@@ -141,7 +145,10 @@ function Message({message, username}){
                     <Text children={message.from} styleSheet={{margin: '0 var(--spc1)', fontWeight: 'var(--fw3)'}} variant="body3"/>
                     <Text children={message.date} variant="body4"/>  
                 </Box>
-                <Text children={message.content} tag="p" styleSheet={{margin: 'var(--spc1)', wordWrap: 'break-word'}}>
+                <Text children={
+                    message.content.startsWith(':sticker:') ?
+                    <Image src={message.content.replace(':sticker:', '').trim()} styleSheet={{maxWidth: '450px', width: '90%'}} /> : message.content 
+                } styleSheet={{margin: 'var(--spc1)', wordWrap: 'break-word'}}>
                 </Text>
             </Box>
         </>
